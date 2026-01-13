@@ -49,7 +49,7 @@
                     <div class="mt-2">
                         @php
                             $statusMap = [
-                                'pending' => ['bg-amber-100', 'text-amber-600', 'Menunggu Bayar'],
+                                'pending' => ['bg-amber-100', 'text-amber-600', 'Menunggu Konfirmasi'],
                                 'booked' => ['bg-emerald-100', 'text-emerald-600', 'Dikonfirmasi'],
                                 'selesai' => ['bg-slate-100', 'text-slate-600', 'Selesai'],
                             ];

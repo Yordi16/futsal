@@ -28,10 +28,10 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
     public function collection()
     {
         $query = Booking::whereIn('status', ['booked', 'selesai'])
-            ->with(['user', 'jadwal.lapangan']);
+            ->with(['user', 'jadwalLapangan.lapangan']);
 
         if ($this->start && $this->end) {
-            $query->whereHas('jadwal', function ($q) {
+            $query->whereHas('jadwalLapangan', function ($q) {
                 $q->whereBetween('tanggal', [$this->start, $this->end]);
             });
         }
@@ -58,9 +58,9 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
         return [
             '#BK-' . $booking->id,
             $booking->user->name ?? 'User Terhapus',
-            $booking->jadwal->lapangan->nama_lapangan ?? '-',
-            $booking->jadwal->tanggal,
-            $booking->jadwal->jam_mulai . ' - ' . $booking->jadwal->jam_selesai,
+            $booking->jadwalLapangan->lapangan->nama_lapangan ?? '-',
+            $booking->jadwalLapangan->tanggal,
+            $booking->jadwalLapangan->jam_mulai . ' - ' . $booking->jadwalLapangan->jam_selesai,
             $booking->total_harga, // Format angka murni agar bisa di-SUM di Excel
         ];
     }

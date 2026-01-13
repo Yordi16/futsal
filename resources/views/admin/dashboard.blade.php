@@ -109,7 +109,7 @@
                                 <td class="px-8 py-5 text-sm text-slate-500 font-medium">
                                     <i class="far fa-calendar-alt mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->tanggal }}
                                     <span class="mx-2 text-slate-200">|</span>
-                                    <i class="far fa-clock mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->jam_mulai }}
+                                    <i class="far fa-clock mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->jam_mulai }} - {{ $b->jadwalLapangan->jam_selesai }}
                                 </td>
                                 <td class="px-8 py-5 text-center">
                                     @php
