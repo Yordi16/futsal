@@ -1,74 +1,81 @@
 <?php
 
-use App\Http\Controllers\AdminBookingController;
-use App\Http\Controllers\AdminDashboardController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookingController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminJadwalLapanganController;
+use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\LapanganController;
 use App\Http\Controllers\ReportController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\BookingController;
+
 
 Route::get('/', function () {
     return redirect('/login');
 });
 
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
-
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'store']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
-Route::middleware('auth')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/dashboard', [AdminDashboardController::class, 'index']);
 
-    Route::get('/admin/dashboard', function () {
-        abort_if(auth()->user()->role != 'admin', 403);
-        return view('admin.dashboard');
-    });
+    // LAPANGAN
+    Route::resource('lapangan', LapanganController::class);
 
-    Route::get('/user/dashboard', function () {
-        abort_if(auth()->user()->role != 'user', 403);
-        return view('user.dashboard');
-    });
+    // JADWAL LAPANGAN
+    Route::get('/jadwal', [AdminJadwalLapanganController::class, 'index'])->name('admin.jadwal.index');
+    Route::get('/jadwal/create', [AdminJadwalLapanganController::class, 'create'])->name('admin.jadwal.create');
+    Route::post('/jadwal', [AdminJadwalLapanganController::class, 'store'])->name('admin.jadwal.store');
+    Route::get('/jadwal/{jadwal}/edit', [AdminJadwalLapanganController::class, 'edit'])->name('admin.jadwal.edit');
+    Route::put('/jadwal/{jadwal}', [AdminJadwalLapanganController::class, 'update'])->name('admin.jadwal.update');
+    Route::delete('/jadwal/{jadwal}', [AdminJadwalLapanganController::class, 'destroy'])->name('admin.jadwal.destroy');
+
+    // BOOKING ADMIN
+    Route::get('/booking', [AdminBookingController::class, 'index'])->name('admin.booking.index');
+    Route::put('/booking/{booking}', [AdminBookingController::class, 'update'])->name('admin.booking.update');
+
+    Route::get('/report', [ReportController::class, 'index'])
+        ->name('admin.report.index');
+
+    Route::get('/report/pdf', [ReportController::class, 'exportPdf'])
+        ->name('admin.report.pdf');
+
+    Route::get('/report/excel', [ReportController::class, 'exportExcel'])
+        ->name('admin.report.excel');
+    Route::get('/report/chart', [ReportController::class, 'chart']);
 });
 
-// //admin lapangan 
-// Route::resource('/admin/lapangan', LapanganController::class);
+/*
+|--------------------------------------------------------------------------
+| USER ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('user')->group(function () {
 
-//BOOKING
-//user
-Route::get('/user/booking', [BookingController::class, 'index']);
-Route::post('/user/booking', [BookingController::class, 'store']);
-Route::get('/user/booking/history', [BookingController::class, 'history']);
-//admin
-Route::get('/admin/booking', [AdminBookingController::class, 'index']);
+    Route::get('/dashboard', [UserDashboardController::class, 'dashboard']);
 
-//report admin
-Route::get('/admin/report', [ReportController::class, 'index']);
+    Route::get('/lapangan', [UserDashboardController::class, 'lapangan']);
+    Route::get('/jadwal/{id}', [UserDashboardController::class, 'jadwal']);
 
-//export excel
-Route::get('/admin/report/excel', [ReportController::class, 'exportExcel']);
+    Route::get('/booking', [UserDashboardController::class, 'booking']);
 
-//export pdf
-Route::get('/admin/report/pdf', [ReportController::class, 'exportPdf']);
-
-
-// //dasboard admin
-// Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
-Route::middleware(['auth'])->group(function () {
-
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::resource('/admin/lapangan', LapanganController::class)
-        ->names([
-            'index'   => 'lapangan.index',
-            'create'  => 'lapangan.create',
-            'store'   => 'lapangan.store',
-            'edit'    => 'lapangan.edit',
-            'update'  => 'lapangan.update',
-            'destroy' => 'lapangan.destroy',
-        ]);
+    // CREATE BOOKING
+    Route::post('/booking', [BookingController::class, 'store']);
 });

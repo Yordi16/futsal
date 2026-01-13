@@ -2,70 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
 use App\Models\Lapangan;
+use App\Models\JadwalLapangan;
+use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
+    /**
+     * LIST LAPANGAN UNTUK BOOKING
+     */
     public function index()
     {
         $lapangans = Lapangan::where('status', 'tersedia')->get();
-        return view('user.booking.index', compact('lapangans'));
+
+        return view('user.booking', compact('lapangans'));
     }
 
+    /**
+     * PROSES BOOKING
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'lapangan_id' => 'required',
-            'tanggal' => 'required|date',
-            'jam_mulai' => 'required',
-            'jam_selesai' => 'required'
+            'jadwal_id' => 'required|exists:jadwal_lapangans,id',
         ]);
 
-        $lapangan = Lapangan::findOrFail($request->lapangan_id);
+        $jadwal = JadwalLapangan::findOrFail($request->jadwal_id);
 
-        $jam = (strtotime($request->jam_selesai) - strtotime($request->jam_mulai)) / 3600;
-        $total = $jam * $lapangan->harga_per_jam;
-
-        // cek bentrok jam
-        $bentrok = Booking::where('lapangan_id', $request->lapangan_id)
-            ->where('tanggal', $request->tanggal)
-            ->where(function ($q) use ($request) {
-                $q->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
-                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai])
-                    ->orWhere(function ($q2) use ($request) {
-                        $q2->where('jam_mulai', '<=', $request->jam_mulai)
-                            ->where('jam_selesai', '>=', $request->jam_selesai);
-                    });
-            })
-            ->exists();
-
-        if ($bentrok) {
-            return back()->withErrors([
-                'jam_mulai' => 'Jam booking bentrok, silakan pilih jam lain'
-            ]);
+        // 1. Cek apakah jadwal masih tersedia (keamanan ganda)
+        if ($jadwal->status_slot !== 'tersedia') {
+            return back()->with('error', 'Maaf, jadwal ini baru saja dipesan orang lain.');
         }
 
-
-        Booking::create([
-            'user_id' => auth()->id(),
-            'lapangan_id' => $lapangan->id,
-            'tanggal' => $request->tanggal,
-            'jam_mulai' => $request->jam_mulai,
-            'jam_selesai' => $request->jam_selesai,
-            'total_harga' => $total
+        // 2. Buat data Booking
+        $booking = Booking::create([
+            'user_id' => Auth::id(),
+            'jadwal_lapangan_id' => $jadwal->id,
+            'total_harga' => $jadwal->lapangan->harga_per_jam,
+            'metode_pembayaran' => 'cod',
+            'status' => 'pending', // Status awal pending sampai admin konfirmasi di lapangan
         ]);
 
-        return redirect()->back()->with('success', 'Booking berhasil');
-    }
-    public function history()
-    {
-        $bookings = Booking::where('user_id', auth()->id())
-            ->with('lapangan')
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        // 3. Update status jadwal agar tidak muncul lagi di daftar
+        $jadwal->update(['status_slot' => 'dibooking']);
 
-        return view('user.booking.history', compact('bookings'));
+        return redirect('/user/booking')->with('success', 'Booking berhasil! Silahkan bayar di kasir saat hari H.');
     }
 }

@@ -13,4 +13,9 @@ class Lapangan extends Model
         'harga_per_jam',
         'status'
     ];
+
+    public function jadwalLapangans()
+    {
+        return $this->hasMany(JadwalLapangan::class);
+    }
 }

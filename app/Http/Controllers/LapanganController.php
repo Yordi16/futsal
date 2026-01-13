@@ -37,14 +37,26 @@ class LapanganController extends Controller
 
     public function edit(Lapangan $lapangan)
     {
+        abort_if(auth()->user()->role !== 'admin', 403);
         return view('admin.lapangan.edit', compact('lapangan'));
     }
 
     public function update(Request $request, Lapangan $lapangan)
     {
+        abort_if(auth()->user()->role !== 'admin', 403);
+
+        $request->validate([
+            'nama_lapangan' => 'required',
+            'jenis' => 'required',
+            'harga_per_jam' => 'required|numeric',
+            'status' => 'required'
+        ]);
+
         $lapangan->update($request->all());
-        return redirect()->route('lapangan.index');
+        return redirect()->route('lapangan.index')
+            ->with('success', 'Data Lapangan berhasil diupdate');
     }
+
 
     public function destroy(Lapangan $lapangan)
     {
