@@ -1,15 +1,37 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="space-y-8">
+    <div class="space-y-8 no-scrollbar" x-data="{
+            openLapangans: [],
+            openTanggals: [],
+            showSuccess: true,
+            toggleLapangan(id) {
+                if (this.openLapangans.includes(id)) {
 
-        {{-- HEADER --}}
+                    this.openLapangans = this.openLapangans.filter(i => i !== id);
+
+
+                    this.openTanggals = this.openTanggals.filter(tglKey => !tglKey.startsWith(id));
+                } else {
+                    this.openLapangans.push(id);
+                }
+            },
+            toggleTanggal(id) {
+                if (this.openTanggals.includes(id)) {
+                    this.openTanggals = this.openTanggals.filter(i => i !== id);
+                } else {
+                    this.openTanggals.push(id);
+                }
+            }
+        }">
+
+
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
-                    <i class="fas fa-calendar-alt text-indigo-500"></i> Penjadwalan Lapangan
+                    <i class="fas fa-calendar-alt text-indigo-500"></i> Manajemen Jadwal
                 </h1>
-                <p class="text-slate-500 font-medium mt-1">Atur ketersediaan waktu untuk setiap lapangan futsal.</p>
+                <p class="text-slate-500 font-medium mt-1">Atur ketersediaan jadwal untuk setiap lapangan.</p>
             </div>
 
             <a href="{{ route('admin.jadwal.create') }}"
@@ -19,92 +41,146 @@
             </a>
         </div>
 
-        {{-- TABLE CONTAINER --}}
-        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-slate-50/50 text-slate-400">
-                            <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.2em]">Lapangan</th>
-                            <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.2em]">Tanggal</th>
-                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Sesi Waktu
-                            </th>
-                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Status Slot
-                            </th>
-                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-50 text-sm">
-                        @forelse($jadwals as $j)
-                            <tr class="hover:bg-slate-50/50 transition-colors group">
-                                <td class="px-8 py-5">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-2 h-8 bg-indigo-500 rounded-full"></div>
-                                        <span class="font-bold text-slate-700">{{ $j->lapangan->nama_lapangan }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-5">
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="font-bold text-slate-700">{{ \Carbon\Carbon::parse($j->tanggal)->translatedFormat('d F Y') }}</span>
-                                        <span
-                                            class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{{ \Carbon\Carbon::parse($j->tanggal)->translatedFormat('l') }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-5 text-center">
-                                    <span class="px-4 py-2 bg-slate-100 rounded-xl text-slate-600 font-black tracking-tighter">
-                                        <i class="far fa-clock mr-2 text-indigo-400"></i>
-                                        {{ $j->jam_mulai }} - {{ $j->jam_selesai }}
-                                    </span>
-                                </td>
-                                <td class="px-8 py-5 text-center">
-                                    @if($j->status_slot == 'tersedia')
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
-                                            <i class="fas fa-door-open"></i> {{ $j->status_slot }}
-                                        </span>
-                                    @else
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-rose-100 text-rose-700 border border-rose-200">
-                                            <i class="fas fa-lock"></i> {{ $j->status_slot }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="px-8 py-5">
-                                    <div class="flex items-center justify-center gap-2">
-                                        {{-- EDIT --}}
-                                        <a href="{{ route('admin.jadwal.edit', $j->id) }}"
-                                            class="w-9 h-9 flex items-center justify-center rounded-xl bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white transition-all shadow-sm">
-                                            <i class="fas fa-edit text-xs"></i>
-                                        </a>
 
-                                        {{-- HAPUS --}}
-                                        <form action="{{ route('admin.jadwal.destroy', $j->id) }}" method="POST" class="inline"
-                                            onsubmit="return confirm('Hapus jadwal ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button
-                                                class="w-9 h-9 flex items-center justify-center rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white transition-all shadow-sm">
-                                                <i class="fas fa-trash text-xs"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-8 py-16 text-center">
-                                    <div class="flex flex-col items-center opacity-30">
-                                        <i class="fas fa-calendar-times text-6xl mb-4 text-slate-300"></i>
-                                        <p class="font-black uppercase tracking-[0.2em] text-sm text-slate-400">Belum ada jadwal
-                                            yang diatur</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+        @if (session('success'))
+            <div x-show="showSuccess"
+                class="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-between gap-3 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <p class="text-emerald-700 font-bold text-sm">{{ session('success') }}</p>
+                </div>
+                <button @click="showSuccess = false" class="text-emerald-400 hover:text-emerald-600 p-2">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
             </div>
-        </div>
+        @endif
+
+
+        @forelse($jadwals->sortBy('lapangan_id')->groupBy('lapangan.nama_lapangan') as $namaLapangan => $jadwalPerLapangan)
+            @php $lapanganId = (string) $jadwalPerLapangan->first()->lapangan_id; @endphp
+
+            <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+
+                <div @click="toggleLapangan('{{ $lapanganId }}')"
+                    class="px-8 py-6 bg-slate-50/50 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-all">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black shadow-lg shadow-indigo-100">
+                            #{{ $lapanganId }}
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-slate-800">{{ $namaLapangan }}</h3>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">
+                                {{ $jadwalPerLapangan->count() }} Total Slot
+                            </p>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"
+                        :class="openLapangans.includes('{{ $lapanganId }}') ? 'rotate-180 text-indigo-500' : ''"></i>
+                </div>
+
+
+                <div x-show="openLapangans.includes('{{ $lapanganId }}')" x-collapse x-cloak class="border-t border-slate-100">
+                    @foreach ($jadwalPerLapangan->sortBy('tanggal')->groupBy('tanggal') as $tanggal => $items)
+                        @php $tanggalKey = $lapanganId . $tanggal; @endphp
+
+                        <div class="border-b border-slate-50 last:border-0">
+                            <div @click="toggleTanggal('{{ $tanggalKey }}')"
+                                class="px-10 py-4 bg-white flex items-center justify-between cursor-pointer hover:bg-indigo-50/30 transition-all">
+                                <div class="flex items-center gap-3">
+                                    <i class="far fa-calendar text-indigo-400"></i>
+                                    <span
+                                        class="font-bold text-slate-700">{{ \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y') }}</span>
+                                    <span
+                                        class="text-[10px] bg-slate-100 px-2 py-0.5 rounded-md text-slate-500 font-black uppercase">{{ \Carbon\Carbon::parse($tanggal)->translatedFormat('l') }}</span>
+                                </div>
+                                <span
+                                    class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">{{ $items->count() }}
+                                    Sesi</span>
+                            </div>
+
+
+                            <div x-show="openTanggals.includes('{{ $tanggalKey }}')" x-collapse x-cloak
+                                class="bg-slate-50/30 px-8 pb-6">
+                                <div class="overflow-x-auto rounded-2xl border border-slate-100 bg-white">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="text-slate-400 border-b border-slate-50">
+                                                <th class="px-6 py-4 text-left text-[9px] font-black uppercase tracking-widest">
+                                                    Sesi Waktu</th>
+                                                <th class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
+                                                    Status</th>
+                                                <th class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
+                                                    Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-50">
+                                            @foreach ($items->sortBy('jam_mulai') as $j)
+                                                <tr class="hover:bg-slate-50/50 transition-colors">
+                                                    <td class="px-6 py-4 text-sm">
+                                                        <span
+                                                            class="px-3 py-1.5 bg-slate-100 rounded-lg text-slate-600 font-bold tracking-tight">
+                                                            {{ \Carbon\Carbon::parse($j->jam_mulai)->format('H:i') }} -
+                                                            {{ \Carbon\Carbon::parse($j->jam_selesai)->format('H:i') }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-center text-sm">
+                                                        <span
+                                                            class="inline-flex items-center gap-1.5 px-3 py-1 text-[9px] font-black uppercase rounded-full {{ $j->status_slot == 'tersedia' ? 'bg-emerald-100 text-emerald-700' : ($j->status_slot == 'booked' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700') }}">
+                                                            <i
+                                                                class="fas {{ $j->status_slot == 'tersedia' ? 'fa-check' : ($j->status_slot == 'booked' ? 'fa-lock' : 'fa-ban') }}"></i>
+                                                            {{ $j->status_slot }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <div class="flex items-center justify-center gap-2">
+                                                            <a href="{{ route('admin.jadwal.edit', $j->id) }}"
+                                                                class="w-8 h-8 flex items-center justify-center rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white transition-all">
+                                                                <i class="fas fa-edit text-[10px]"></i>
+                                                            </a>
+                                                            <form action="{{ route('admin.jadwal.destroy', $j->id) }}" method="POST"
+                                                                onsubmit="return confirm('Hapus jadwal ini?')">
+                                                                @csrf @method('DELETE')
+                                                                <button
+                                                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white transition-all">
+                                                                    <i class="fas fa-trash text-[10px]"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @empty
+            <div class="text-center py-20 bg-white rounded-[2rem] border border-dashed border-slate-300 text-slate-400">
+                <i class="fas fa-calendar-times text-5xl mb-4"></i>
+                <p class="font-bold">Belum ada jadwal yang dibuat.</p>
+            </div>
+        @endforelse
     </div>
+
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 @endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lapangan;
 use App\Models\JadwalLapangan;
 use App\Models\Booking;
+use Carbon\Carbon;
+
 
 class UserDashboardController extends Controller
 {
@@ -12,17 +14,14 @@ class UserDashboardController extends Controller
     {
         $userId = auth()->id();
 
-        // Jumlah booking mendatang (booked)
         $upcomingCount = Booking::where('user_id', $userId)
             ->where('status', 'booked')
             ->count();
 
-        // Total main yang sudah selesai
         $totalMainCount = Booking::where('user_id', $userId)
             ->where('status', 'selesai')
             ->count();
 
-        // 5 riwayat booking terbaru
         $recentBookings = Booking::with(['jadwalLapangan.lapangan'])
             ->where('user_id', $userId)
             ->latest()
@@ -42,12 +41,31 @@ class UserDashboardController extends Controller
     {
         $lapangan = Lapangan::findOrFail($id);
 
-        // Ambil jadwal yang tersedia untuk lapangan ini
-        // Kita urutkan berdasarkan tanggal dan jam mulai
+        $now = Carbon::now();
+        $today = $now->toDateString();
+        $currentTime = $now->toTimeString();
+
         $jadwals = JadwalLapangan::where('lapangan_id', $id)
+            ->where(function ($query) use ($today, $currentTime) {
+                $query->where('tanggal', '>', $today)
+                    ->orWhere(function ($q) use ($today, $currentTime) {
+                        $q->where('tanggal', $today)
+                            ->where('jam_mulai', '>', $currentTime);
+                    });
+            })
             ->orderBy('tanggal', 'asc')
             ->orderBy('jam_mulai', 'asc')
-            ->get();
+            ->get()
+            ->map(function ($jadwal) use ($lapangan) {
+                $mulai = Carbon::parse($jadwal->jam_mulai);
+                $selesai = Carbon::parse($jadwal->jam_selesai);
+
+                $durasi = $mulai->diffInMinutes($selesai) / 60;
+                $jadwal->durasi = $durasi;
+                $jadwal->total_harga = $durasi * $lapangan->harga_per_jam;
+
+                return $jadwal;
+            });
 
         return view('user.jadwal', compact('lapangan', 'jadwals'));
     }

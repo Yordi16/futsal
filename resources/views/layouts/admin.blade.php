@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel | FutsalHub</title>
+    <title>Admin Panel | AriFutsal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
@@ -15,7 +15,6 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        /* Custom scrollbar untuk sidebar */
         .custom-scroll::-webkit-scrollbar {
             width: 4px;
         }
@@ -28,6 +27,15 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
         }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 
@@ -35,9 +43,8 @@
 
     <div class="flex h-screen overflow-hidden">
 
-        {{-- SIDEBAR --}}
         <aside class="w-72 bg-indigo-950 text-slate-100 flex flex-col shadow-2xl fixed inset-y-0 left-0 z-50">
-            {{-- Logo Area --}}
+
             <div class="p-8 border-b border-white/10">
                 <div class="flex items-center gap-3">
                     <div
@@ -45,12 +52,11 @@
                         <i class="fas fa-futbol fa-lg"></i>
                     </div>
                     <h1 class="text-xl font-black tracking-tight text-white">
-                        FUTSAL<span class="text-amber-400">HUB</span>
+                        Ari<span class="text-amber-400">Futsal</span>
                     </h1>
                 </div>
             </div>
 
-            {{-- Menu Navigation --}}
             <nav
                 class="flex-1 p-6 space-y-2 overflow-y-auto custom-scroll text-sm font-semibold uppercase tracking-wider">
                 @php
@@ -75,30 +81,30 @@
                     class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/lapangan*']) }}">
                     <i
                         class="fas fa-layer-group w-5 text-center {{ request()->is('admin/lapangan*') ? 'text-amber-400' : '' }}"></i>
-                    Lapangan
+                    Kelola Lapangan
                 </a>
 
                 <a href="/admin/jadwal" class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/jadwal*']) }}">
                     <i
                         class="fas fa-calendar-alt w-5 text-center {{ request()->is('admin/jadwal*') ? 'text-amber-400' : '' }}"></i>
-                    Jadwal
+                    Kelola Jadwal
                 </a>
 
                 <a href="/admin/booking"
                     class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/booking*']) }}">
                     <i
                         class="fas fa-ticket-alt w-5 text-center {{ request()->is('admin/booking*') ? 'text-amber-400' : '' }}"></i>
-                    Booking
+                    Kelola Booking
                 </a>
 
                 <a href="/admin/report" class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/report*']) }}">
                     <i
                         class="fas fa-file-invoice-dollar w-5 text-center {{ request()->is('admin/report*') ? 'text-amber-400' : '' }}"></i>
-                    Report
+                    Laporan
                 </a>
             </nav>
 
-            {{-- Logout Area --}}
+
             <div class="p-6 border-t border-white/10">
                 <form action="/logout" method="POST">
                     @csrf
@@ -110,9 +116,9 @@
             </div>
         </aside>
 
-        {{-- CONTENT --}}
-        <main class="flex-1 ml-72 overflow-y-auto bg-slate-50">
-            {{-- Header/Top Bar --}}
+
+        <main class="flex-1 ml-72 overflow-y-auto bg-slate-50 no-scrollbar">
+
             <header class="h-20 flex items-center justify-end px-10">
                 <div class="flex items-center gap-4">
                     <div class="text-right">

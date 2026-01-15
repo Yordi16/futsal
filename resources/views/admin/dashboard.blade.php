@@ -3,10 +3,9 @@
 @section('content')
     <div class="space-y-10">
 
-        {{-- Title Section --}}
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
+                <h1 class="text-3xl font-black text-slate-800 tracking-tight flex items-center">
                     <i class="fas fa-grid-2 text-emerald-500"></i> Dashboard Overview
                 </h1>
                 <p class="text-slate-500 font-medium mt-1">Pantau performa bisnis futsal Anda hari ini.</p>
@@ -16,7 +15,6 @@
             </div>
         </div>
 
-        {{-- STAT CARD --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div
                 class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
@@ -58,7 +56,8 @@
                     <div class="relative z-10">
                         <p class="text-xs font-black uppercase tracking-widest text-emerald-500">Total Pendapatan</p>
                         <h2 class="text-2xl font-black text-emerald-900 mt-1">Rp
-                            {{ number_format($totalPendapatan, 0, ',', '.') }}</h2>
+                            {{ number_format($totalPendapatan, 0, ',', '.') }}
+                        </h2>
                     </div>
                     <div
                         class="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-200 relative z-10">
@@ -68,11 +67,11 @@
             </div>
         </div>
 
-        {{-- BOOKING TERBARU --}}
+
         <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
             <div class="p-8 border-b border-slate-50 flex items-center justify-between">
                 <h3 class="text-xl font-black text-slate-800 flex items-center gap-3">
-                    <i class="fas fa-clock-rotate-left text-indigo-500"></i> Transaksi Terkini
+                    <i class="fas fa-clock-rotate-left text-indigo-500"></i> Booking Terkini
                 </h3>
                 <a href="/admin/booking"
                     class="text-xs font-black text-indigo-600 hover:text-indigo-800 uppercase tracking-widest bg-indigo-50 px-4 py-2 rounded-xl transition">Lihat
@@ -107,17 +106,20 @@
                                     </span>
                                 </td>
                                 <td class="px-8 py-5 text-sm text-slate-500 font-medium">
-                                    <i class="far fa-calendar-alt mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->tanggal }}
+                                    <i class="far fa-calendar-alt mr-1 text-indigo-300"></i>
+                                    {{ $b->jadwalLapangan->tanggal }}
                                     <span class="mx-2 text-slate-200">|</span>
-                                    <i class="far fa-clock mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->jam_mulai }} - {{ $b->jadwalLapangan->jam_selesai }}
+                                    <i class="far fa-clock mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->jam_mulai }} -
+                                    {{ $b->jadwalLapangan->jam_selesai }}
                                 </td>
                                 <td class="px-8 py-5 text-center">
                                     @php
-                                        $statusClass = [
-                                            'pending' => 'bg-amber-100 text-amber-700 border-amber-200',
-                                            'booked' => 'bg-indigo-100 text-indigo-700 border-indigo-200',
-                                            'selesai' => 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                                        ][$b->status] ?? 'bg-slate-100 text-slate-700';
+                                        $statusClass =
+                                            [
+                                                'pending' => 'bg-amber-100 text-amber-700 border-amber-200',
+                                                'booked' => 'bg-indigo-100 text-indigo-700 border-indigo-200',
+                                                'selesai' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
+                                            ][$b->status] ?? 'bg-slate-100 text-slate-700';
                                     @endphp
                                     <span
                                         class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border {{ $statusClass }}">
@@ -130,7 +132,8 @@
                                 <td colspan="4" class="p-12 text-center">
                                     <div class="flex flex-col items-center opacity-20">
                                         <i class="fas fa-folder-open text-6xl mb-4"></i>
-                                        <p class="font-black uppercase tracking-widest text-sm text-slate-400">Belum ada booking
+                                        <p class="font-black uppercase tracking-widest text-sm text-slate-400">Belum ada
+                                            booking
                                             terkini</p>
                                     </div>
                                 </td>

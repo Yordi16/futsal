@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>FutsalHub | Panel User</title>
+    <title>Ari Futsal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
@@ -51,7 +51,7 @@
                     class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 transform -rotate-6">
                     <i class="fas fa-futbol fa-lg"></i>
                 </div>
-                <span class="text-xl font-black tracking-tighter">FUTSAL<span class="text-emerald-400">HUB</span></span>
+                <span class="text-xl font-black tracking-tighter">ARI<span class="text-emerald-400">FUTSAL</span></span>
             </div>
 
             {{-- Menu Links --}}
@@ -66,7 +66,7 @@
                 </a>
                 <a href="/user/booking"
                     class="nav-link {{ request()->is('user/booking*') ? 'nav-active text-emerald-400' : 'text-slate-300 hover:text-white' }}">
-                    Booking Saya
+                    Booking Jadwal
                 </a>
 
                 <div class="h-6 w-[1px] bg-white/20 ml-2"></div>

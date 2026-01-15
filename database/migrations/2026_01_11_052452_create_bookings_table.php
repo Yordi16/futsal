@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
@@ -16,15 +14,14 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('jadwal_lapangan_id')->constrained()->cascadeOnDelete();
             $table->integer('total_harga');
-            $table->enum('status', ['pending', 'booked', 'selesai'])->default('pending');
+            $table->enum('status', ['pending', 'booked', 'selesai', 'dibatalkan'])->default('pending');
             $table->enum('metode_pembayaran', ['cod'])->default('cod');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('bookings');

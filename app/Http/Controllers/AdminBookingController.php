@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminBookingController extends Controller
 {
@@ -11,7 +12,6 @@ class AdminBookingController extends Controller
     {
         abort_if(auth()->user()->role !== 'admin', 403);
 
-        // Booking + relasi aman (user, jadwal, lapangan via jadwal)
         $bookings = Booking::with([
             'user',
             'jadwalLapangan.lapangan'
@@ -27,33 +27,25 @@ class AdminBookingController extends Controller
         abort_if(auth()->user()->role !== 'admin', 403);
 
         $request->validate([
-            'status' => 'required|in:pending,booked,selesai'
+            'status' => 'required|in:pending,booked,selesai,dibatalkan'
         ]);
 
-        // Update status booking
-        $booking->update([
-            'status' => $request->status
-        ]);
+        return DB::transaction(function () use ($request, $booking) {
+            $booking->update([
+                'status' => $request->status
+            ]);
 
-        /**
-         * Sinkron status slot jadwal
-         * - booked   -> slot booked
-         * - selesai  -> slot tersedia
-         */
-        if ($booking->jadwalLapangan) {
-            if ($request->status === 'booked') {
-                $booking->jadwalLapangan->update([
-                    'status_slot' => 'dibooking'
-                ]);
+            if ($booking->jadwalLapangan) {
+                if (in_array($request->status, ['booked', 'pending'])) {
+                    $booking->jadwalLapangan->update(['status_slot' => 'dibooking']);
+                }
+
+                if (in_array($request->status, ['selesai', 'dibatalkan'])) {
+                    $booking->jadwalLapangan->update(['status_slot' => 'tersedia']);
+                }
             }
 
-            if ($request->status === 'selesai') {
-                $booking->jadwalLapangan->update([
-                    'status_slot' => 'tersedia'
-                ]);
-            }
-        }
-
-        return back()->with('success', 'Status booking berhasil diperbarui');
+            return back()->with('success', 'Status booking berhasil diperbarui');
+        });
     }
 }

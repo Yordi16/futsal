@@ -9,17 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    /**
-     * FORM LOGIN
-     */
+
     public function login()
     {
         return view('auth.login');
     }
 
-    /**
-     * PROSES LOGIN
-     */
     public function authenticate(Request $request)
     {
         $request->validate([
@@ -32,7 +27,6 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Redirect berdasarkan role
             if (auth()->user()->role === 'admin') {
                 return redirect('/admin/dashboard');
             }
@@ -45,23 +39,17 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * FORM REGISTER
-     */
     public function register()
     {
         return view('auth.register');
     }
 
-    /**
-     * PROSES REGISTER
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:6'
+            'password' => 'required|min:6|confirmed'
         ]);
 
         User::create([
@@ -71,7 +59,7 @@ class AuthController extends Controller
             'role'     => 'user'
         ]);
 
-        return redirect('/login')->with('success', 'Registrasi berhasil, silakan login');
+        return redirect('/login')->with('success', 'Registrasi berhasil, silahkan login');
     }
 
     /**

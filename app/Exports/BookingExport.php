@@ -14,20 +14,15 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
 {
     protected $start, $end;
 
-    // Menangkap filter tanggal dari controller
     public function __construct($start = null, $end = null)
     {
         $this->start = $start;
         $this->end = $end;
     }
 
-    /**
-     * AKTIVASI LOGIKA UTAMA: 
-     * Hanya mengambil status 'booked' dan 'selesai' untuk laporan pendapatan.
-     */
     public function collection()
     {
-        $query = Booking::whereIn('status', ['booked', 'selesai'])
+        $query = Booking::successful()
             ->with(['user', 'jadwalLapangan.lapangan']);
 
         if ($this->start && $this->end) {
@@ -39,7 +34,6 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
         return $query->latest()->get();
     }
 
-    // Header Excel
     public function headings(): array
     {
         return [
@@ -52,7 +46,6 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
         ];
     }
 
-    // Mapping agar data rapi saat dibaca di Excel
     public function map($booking): array
     {
         return [
@@ -61,11 +54,10 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
             $booking->jadwalLapangan->lapangan->nama_lapangan ?? '-',
             $booking->jadwalLapangan->tanggal,
             $booking->jadwalLapangan->jam_mulai . ' - ' . $booking->jadwalLapangan->jam_selesai,
-            $booking->total_harga, // Format angka murni agar bisa di-SUM di Excel
+            $booking->total_harga,
         ];
     }
 
-    // Memberikan style pada header agar profesional
     public function styles(Worksheet $sheet)
     {
         return [
@@ -74,7 +66,8 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['rgb' => 'E2E8F0']
-                ]
+                ],
+                'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER]
             ],
         ];
     }

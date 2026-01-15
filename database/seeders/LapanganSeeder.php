@@ -38,20 +38,6 @@ class LapanganSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'nama_lapangan' => 'Lapangan E',
-                'jenis' => 'Vinyl',
-                'harga_per_jam' => 120000,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'nama_lapangan' => 'Lapangan F',
-                'jenis' => 'Rumput Sintetis',
-                'harga_per_jam' => 100000,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
         ]);
     }
 }

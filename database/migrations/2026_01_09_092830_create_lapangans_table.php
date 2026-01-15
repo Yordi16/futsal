@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('lapangans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_lapangan');
-            $table->string('jenis'); // Vinyl / Rumput Sintetis
+            $table->string('nama_lapangan')->unique();
+            $table->string('jenis');
             $table->integer('harga_per_jam');
             $table->enum('status', ['tersedia', 'tidak tersedia'])->default('tersedia');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class JadwalLapangan extends Model
 {
+
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
         'lapangan_id',
         'tanggal',
@@ -17,7 +21,7 @@ class JadwalLapangan extends Model
 
     public function lapangan()
     {
-        return $this->belongsTo(Lapangan::class, 'lapangan_id');
+        return $this->belongsTo(Lapangan::class, 'lapangan_id')->withTrashed();
     }
 
     public function booking()

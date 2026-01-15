@@ -3,7 +3,22 @@
 @section('content')
     <div class="space-y-8">
 
-        {{-- HEADER --}}
+        @if (session('success'))
+            <div id="alert-success"
+                class="mb-6 flex items-center justify-between p-4 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 rounded-r-2xl shadow-sm transition-all duration-500">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-md">
+                        <i class="fas fa-check text-xs"></i>
+                    </div>
+                    <p class="text-sm font-bold tracking-wide">{{ session('success') }}</p>
+                </div>
+                <button onclick="document.getElementById('alert-success').style.display='none'"
+                    class="text-emerald-400 hover:text-emerald-600 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        @endif
+
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
@@ -15,11 +30,11 @@
             <a href="{{ route('lapangan.create') }}"
                 class="flex items-center justify-center gap-3 px-6 py-3 bg-emerald-600 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all transform active:scale-95">
                 <i class="fas fa-plus"></i>
-                Tambah Lapangan
+                Tambah Lapangan Baru
             </a>
         </div>
 
-        {{-- TABLE CONTAINER --}}
+
         <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -27,7 +42,8 @@
                         <tr class="bg-slate-50/50 text-slate-400">
                             <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-[0.2em]">Info Lapangan
                             </th>
-                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Jenis Rumput
+                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Jenis
+                                Lapangan
                             </th>
                             <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-[0.2em]">Harga Sewa
                             </th>
@@ -46,7 +62,8 @@
                                         </div>
                                         <div>
                                             <p class="font-bold text-slate-800 tracking-tight">{{ $l->nama_lapangan }}</p>
-                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">ID:
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                                                ID:
                                                 #LAP-0{{ $l->id }}</p>
                                         </div>
                                     </div>
@@ -64,7 +81,7 @@
                                     </div>
                                 </td>
                                 <td class="px-8 py-5 text-center">
-                                    @if($l->status == 'tersedia')
+                                    @if ($l->status == 'tersedia')
                                         <span
                                             class="inline-flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-sm shadow-emerald-100">
                                             <i class="fas fa-check-circle"></i> Tersedia
@@ -72,20 +89,20 @@
                                     @else
                                         <span
                                             class="inline-flex items-center gap-1.5 px-4 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full bg-rose-100 text-rose-700 border border-rose-200 shadow-sm shadow-rose-100">
-                                            <i class="fas fa-times-circle"></i> Sibuk
+                                            <i class="fas fa-times-circle"></i> Tidak Tersedia
                                         </span>
                                     @endif
                                 </td>
                                 <td class="px-8 py-5">
                                     <div class="flex items-center justify-center gap-2">
-                                        {{-- EDIT --}}
+
                                         <a href="{{ route('lapangan.edit', $l->id) }}"
                                             class="w-9 h-9 flex items-center justify-center rounded-xl bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white transition-all shadow-sm"
                                             title="Edit Lapangan">
                                             <i class="fas fa-edit text-xs"></i>
                                         </a>
 
-                                        {{-- HAPUS --}}
+
                                         <form action="{{ route('lapangan.destroy', $l->id) }}" method="POST" class="inline"
                                             onsubmit="return confirm('Yakin ingin menghapus lapangan ini?')">
                                             @csrf
@@ -104,7 +121,8 @@
                                 <td colspan="5" class="px-8 py-16 text-center">
                                     <div class="flex flex-col items-center opacity-30">
                                         <i class="fas fa-layer-group text-6xl mb-4"></i>
-                                        <p class="font-black uppercase tracking-[0.2em] text-sm text-slate-400">Data lapangan
+                                        <p class="font-black uppercase tracking-[0.2em] text-sm text-slate-400">Data
+                                            lapangan
                                             belum tersedia</p>
                                     </div>
                                 </td>

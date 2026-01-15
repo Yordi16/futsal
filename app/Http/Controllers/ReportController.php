@@ -11,17 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
-    /**
-     * Menampilkan halaman laporan utama
-     * Route: admin.report.index
-     */
+
     public function index(Request $request)
     {
+        abort_if(auth()->user()->role !== 'admin', 403);
+
         $start = $request->start_date;
         $end = $request->end_date;
 
-        // Hanya hitung pendapatan dari status 'booked' atau 'selesai'
-        $query = Booking::whereIn('status', ['selesai'])
+        $query = Booking::successful()
             ->with(['user', 'jadwalLapangan.lapangan']);
 
         if ($start && $end) {
@@ -36,16 +34,12 @@ class ReportController extends Controller
         return view('admin.report.index', compact('bookings', 'total', 'start', 'end'));
     }
 
-    /**
-     * Export data ke PDF
-     * Route: admin.report.pdf menggunakan method exportPdf
-     */
     public function exportPdf(Request $request)
     {
         $start = $request->start_date;
         $end = $request->end_date;
 
-        $query = Booking::whereIn('status', ['booked', 'selesai'])
+        $query = Booking::successful()
             ->with(['user', 'jadwalLapangan.lapangan']);
 
         if ($start && $end) {
@@ -57,38 +51,27 @@ class ReportController extends Controller
         $bookings = $query->get();
         $pdf = Pdf::loadView('admin.report.pdf', compact('bookings', 'start', 'end'));
 
-        return $pdf->download('Laporan-Transaksi-Futsal.pdf');
+        return $pdf->download('Laporan-Transaksi-Ari-Futsal.pdf');
     }
 
-    /**
-     * Export data ke Excel
-     * Route: admin.report.excel menggunakan method exportExcel
-     */
     public function exportExcel(Request $request)
     {
-        // Memanggil BookingExport dengan filter tanggal
+
         return Excel::download(
             new BookingExport($request->start_date, $request->end_date),
-            'Laporan-Booking-Futsal.xlsx'
+            'Laporan-Booking-Ari-Futsal.xlsx'
         );
     }
 
-    /**
-     * Method untuk Chart
-     * Route: /report/chart menggunakan method chart
-     */
     public function chart(Request $request)
     {
         $total = $this->getChartData($request->start_date, $request->end_date);
         return response()->json($total);
     }
 
-    /**
-     * Helper untuk mengambil data grafik secara konsisten
-     */
     private function getChartData($start, $end)
     {
-        $query = Booking::whereIn('status', ['booked', 'selesai'])
+        $query = Booking::successful()
             ->join('jadwal_lapangans', 'bookings.jadwal_lapangan_id', '=', 'jadwal_lapangans.id')
             ->select(
                 DB::raw('DATE(jadwal_lapangans.tanggal) as tanggal'),

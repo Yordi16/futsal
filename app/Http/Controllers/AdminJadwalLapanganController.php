@@ -10,9 +10,11 @@ class AdminJadwalLapanganController extends Controller
 {
     public function index()
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
-        $jadwals = JadwalLapangan::with('lapangan')
+        $jadwals = JadwalLapangan::with(['lapangan' => function ($q) {
+            $q->withTrashed();
+        }])
             ->orderBy('tanggal')
             ->orderBy('jam_mulai')
             ->get();
@@ -22,7 +24,7 @@ class AdminJadwalLapanganController extends Controller
 
     public function create()
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
         $lapangans = Lapangan::all();
         return view('admin.jadwal.create', compact('lapangans'));
@@ -30,34 +32,35 @@ class AdminJadwalLapanganController extends Controller
 
     public function store(Request $request)
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
-        $request->validate([
-            'lapangan_id' => 'required',
-            'tanggal'     => 'required|date',
+        $validated = $request->validate([
+            'lapangan_id' => 'required|exists:lapangans,id',
+            'tanggal'     => 'required|date|after_or_equal:today',
             'jam_mulai'   => 'required',
             'jam_selesai' => 'required|after:jam_mulai',
         ]);
 
-        // CEK JADWAL BENTROK
         $bentrok = JadwalLapangan::where('lapangan_id', $request->lapangan_id)
             ->where('tanggal', $request->tanggal)
             ->where(function ($q) use ($request) {
-                $q->whereBetween('jam_mulai', [$request->jam_mulai, $request->jam_selesai])
-                    ->orWhereBetween('jam_selesai', [$request->jam_mulai, $request->jam_selesai]);
+                $q->where(function ($query) use ($request) {
+                    $query->where('jam_mulai', '<', $request->jam_selesai)
+                        ->where('jam_selesai', '>', $request->jam_mulai);
+                });
             })->exists();
 
         if ($bentrok) {
-            return back()->withErrors(['jadwal' => 'Jam tersebut sudah terisi jadwal lain!']);
+            return back()->withInput()->withErrors(['jadwal' => 'Gagal! Jam tersebut bentrok dengan jadwal lain yang sudah ada.']);
         }
 
-        JadwalLapangan::create($request->all() + ['status_slot' => 'tersedia']);
-        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal ditambahkan');
+        JadwalLapangan::create($validated + ['status_slot' => 'tersedia']);
+        return redirect()->route('admin.jadwal.index')->with('success', 'Jadwal berhasil ditambahkan');
     }
 
     public function edit(JadwalLapangan $jadwal)
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
         $lapangans = Lapangan::all();
         return view('admin.jadwal.edit', compact('jadwal', 'lapangans'));
@@ -65,23 +68,32 @@ class AdminJadwalLapanganController extends Controller
 
     public function update(Request $request, JadwalLapangan $jadwal)
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
-        $request->validate([
+        if ($jadwal->status_slot === 'dibooking') {
+            return back()->withErrors(['jadwal' => 'Jadwal ini sudah dibooking pelanggan.']);
+        }
+        $validated = $request->validate([
             'lapangan_id' => 'required|exists:lapangans,id',
             'tanggal'     => 'required|date',
             'jam_mulai'   => 'required',
             'jam_selesai' => 'required|after:jam_mulai',
-            'status_slot' => 'required|in:tersedia,booked',
+            'status_slot' => 'required|in:tersedia,tidak tersedia',
         ]);
 
-        $jadwal->update([
-            'lapangan_id' => $request->lapangan_id,
-            'tanggal'     => $request->tanggal,
-            'jam_mulai'   => $request->jam_mulai,
-            'jam_selesai' => $request->jam_selesai,
-            'status_slot' => $request->status_slot,
-        ]);
+        $bentrok = JadwalLapangan::where('lapangan_id', $request->lapangan_id)
+            ->where('tanggal', $request->tanggal)
+            ->where('id', '!=', $jadwal->id)
+            ->where(function ($q) use ($request) {
+                $q->where('jam_mulai', '<', $request->jam_selesai)
+                    ->where('jam_selesai', '>', $request->jam_mulai);
+            })->exists();
+
+        if ($bentrok) {
+            return back()->withInput()->withErrors(['jadwal' => 'Gagal update! Jam tersebut bentrok dengan jadwal lain.']);
+        }
+
+        $jadwal->update($validated);
 
         return redirect()
             ->route('admin.jadwal.index')
@@ -90,10 +102,15 @@ class AdminJadwalLapanganController extends Controller
 
     public function destroy(JadwalLapangan $jadwal)
     {
-        abort_if(auth()->user()->role !== 'admin', 403);
+        $this->authorizeAdmin();
 
         $jadwal->delete();
 
         return back()->with('success', 'Jadwal berhasil dihapus');
+    }
+
+    private function authorizeAdmin()
+    {
+        return abort_if(auth()->user()->role !== 'admin', 403, 'Akses ditolak.');
     }
 }
