@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Laporan Booking Futsal</title>
+    <title>Laporan Booking Ari Futsal</title>
     <style>
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
@@ -86,7 +86,7 @@
     <div class="header">
         <h2>Laporan Transaksi Booking</h2>
         <div class="range">
-            @if($start && $end)
+            @if ($start && $end)
                 Periode: <strong>{{ \Carbon\Carbon::parse($start)->translatedFormat('d F Y') }}</strong>
                 s/d
                 <strong>{{ \Carbon\Carbon::parse($end)->translatedFormat('d F Y') }}</strong>
@@ -109,7 +109,7 @@
         </thead>
         <tbody>
             @php $grandTotal = 0; @endphp
-            @foreach($bookings as $b)
+            @foreach ($bookings as $b)
                 @php $grandTotal += $b->total_harga; @endphp
                 <tr>
                     <td class="center">{{ $loop->iteration }}</td>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers; // Sesuaikan dengan web.php yang memanggil App\Http\Controllers\ReportController
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Booking;

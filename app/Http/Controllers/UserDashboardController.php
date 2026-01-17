@@ -6,10 +6,12 @@ use App\Models\Lapangan;
 use App\Models\JadwalLapangan;
 use App\Models\Booking;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 class UserDashboardController extends Controller
 {
+
     public function dashboard()
     {
         $userId = auth()->id();
@@ -31,12 +33,17 @@ class UserDashboardController extends Controller
         return view('user.dashboard', compact('upcomingCount', 'totalMainCount', 'recentBookings'));
     }
 
-    public function lapangan()
+    public function lapangan(Request $request)
     {
-        $lapangans = Lapangan::all();
+
+        $lapangans = Lapangan::query()
+            ->when($request->jenis, function ($query, $jenis) {
+                return $query->where('jenis', 'LIKE', '%' . $jenis . '%');
+            })
+            ->get();
+
         return view('user.lapangan', compact('lapangans'));
     }
-
     public function jadwal($id)
     {
         $lapangan = Lapangan::findOrFail($id);
