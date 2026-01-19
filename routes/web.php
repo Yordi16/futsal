@@ -9,6 +9,10 @@ use App\Http\Controllers\LapanganController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\KelolaUserController;
+use App\Http\Controllers\UserDetailController;
+
+
 
 Route::get('/', function () {
     return redirect('/login');
@@ -27,7 +31,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('lapangan', LapanganController::class);
-    // Route::get('/lapangan', [LapanganController::class, 'index'])->name('admin.lapangan.index');
     Route::get('/jadwal', [AdminJadwalLapanganController::class, 'index'])->name('admin.jadwal.index');
     Route::get('/jadwal/create', [AdminJadwalLapanganController::class, 'create'])->name('admin.jadwal.create');
     Route::post('/jadwal', [AdminJadwalLapanganController::class, 'store'])->name('admin.jadwal.store');
@@ -38,6 +41,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/booking', [AdminBookingController::class, 'index'])->name('admin.booking.index');
     Route::put('/booking/{booking}', [AdminBookingController::class, 'update'])->name('admin.booking.update');
+
+    Route::get('/daftar-user', [KelolaUserController::class, 'index'])->name('admin.daftaruser.index');
+
+    Route::get('/daftar-user/{user}/order', [UserDetailController::class, 'index'])->name('admin.daftaruser.order');
 
     Route::get('/report', [ReportController::class, 'index'])->name('admin.report.index');
     Route::get('/report/pdf', [ReportController::class, 'exportPdf'])->name('admin.report.pdf');

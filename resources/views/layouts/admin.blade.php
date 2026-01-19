@@ -96,6 +96,12 @@
                         class="fas fa-ticket-alt w-5 text-center {{ request()->is('admin/booking*') ? 'text-amber-400' : '' }}"></i>
                     Kelola Booking
                 </a>
+                
+                <a href="{{ route('admin.daftaruser.index') }}"
+                    class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/daftar-user*']) }}">
+                    <i class="fas fa-users w-5 text-center {{ request()->is('admin/daftar-user*') ? 'text-amber-400' : '' }}"></i>
+                    Kelola User
+                </a>
 
                 <a href="/admin/report" class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/report*']) }}">
                     <i
