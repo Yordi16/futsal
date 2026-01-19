@@ -77,7 +77,7 @@
                     Dashboard
                 </a>
 
-                <a href="{{ route('admin.lapangan.index') }}"
+                <a href="{{ route('lapangan.index') }}"
                     class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/lapangan*']) }}">
                     <i
                         class="fas fa-layer-group w-5 text-center {{ request()->is('admin/lapangan*') ? 'text-amber-400' : '' }}"></i>
