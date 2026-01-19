@@ -93,21 +93,24 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    @php
+                                   @php
+        $statusMap = [
+            'pending'     => ['bg-amber-100', 'text-amber-600', 'Menunggu Konfirmasi'],
+            'booked'      => ['bg-emerald-500', 'text-white', 'Dikonfirmasi'],
+            'selesai'     => ['bg-slate-100', 'text-slate-500', 'Selesai'],
+            'dibatalkan'  => ['bg-rose-100', 'text-rose-600', 'Dibatalkan'],
+        ];
 
-                                        $statusStyles = [
-                                            'pending' => 'bg-amber-100 text-amber-600',
-                                            'booked' => 'bg-emerald-100 text-emerald-600',
-                                            'selesai' => 'bg-slate-800 text-white',
-                                            'dibatalkan' => 'bg-rose-100 text-rose-600',
-                                        ];
-                                        $currentStyle = $statusStyles[$b->status] ?? 'bg-slate-100 text-slate-600';
-                                    @endphp
+        $st = $statusMap[$b->status] 
+              ?? ['bg-slate-100', 'text-slate-600', ucfirst($b->status)];
+    @endphp
 
-                                    <span
-                                        class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase inline-block tracking-wider {{ $currentStyle }}">
-                                        {{ $b->status }}
-                                    </span>
+    <span
+        class="{{ $st[0] }} {{ $st[1] }} px-3 py-1.5 rounded-xl
+               text-[7.5px] md:text-[10px] font-black uppercase tracking-widest
+               shadow-sm inline-block whitespace-nowrap">
+        {{ $st[2] }}
+    </span>
                                 </td>
 
                                 <td class="px-6 py-4">
@@ -142,18 +145,23 @@
                     <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-sm relative overflow-hidden">
                         <div class="absolute top-0 right-0">
                             @php
-                                $statusStyles = [
-                                    'pending' => 'bg-amber-500 text-white',
-                                    'booked' => 'bg-emerald-500 text-white',
-                                    'selesai' => 'bg-slate-800 text-white',
-                                    'dibatalkan' => 'bg-rose-500 text-white',
-                                ];
-                                $currentStyle = $statusStyles[$b->status] ?? 'bg-slate-100 text-slate-500';
-                            @endphp
-                            <span
-                                class="px-4 py-1.5 rounded-bl-2xl text-[8px] font-black uppercase tracking-widest {{ $currentStyle }}">
-                                {{ $b->status }}
-                            </span>
+        $statusMap = [
+            'pending'     => ['bg-amber-100', 'text-amber-600', 'Menunggu Konfirmasi'],
+            'booked'      => ['bg-emerald-500', 'text-white', 'Dikonfirmasi'],
+            'selesai'     => ['bg-slate-100', 'text-slate-500', 'Selesai'],
+            'dibatalkan'  => ['bg-rose-100', 'text-rose-600', 'Dibatalkan'],
+        ];
+
+        $st = $statusMap[$b->status] 
+              ?? ['bg-slate-100', 'text-slate-600', ucfirst($b->status)];
+    @endphp
+
+    <span
+        class="{{ $st[0] }} {{ $st[1] }} px-3 py-1.5 rounded-xl
+               text-[7.5px] md:text-[10px] font-black uppercase tracking-widest
+               shadow-sm inline-block whitespace-nowrap">
+        {{ $st[2] }}
+    </span>
                         </div>
 
                         <div class="flex flex-col gap-3">
