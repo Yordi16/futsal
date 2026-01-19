@@ -96,10 +96,11 @@
                         class="fas fa-ticket-alt w-5 text-center {{ request()->is('admin/booking*') ? 'text-amber-400' : '' }}"></i>
                     Kelola Booking
                 </a>
-                
+
                 <a href="{{ route('admin.daftaruser.index') }}"
                     class="flex items-center gap-4 py-3 rounded-xl {{ $menu(['admin/daftar-user*']) }}">
-                    <i class="fas fa-users w-5 text-center {{ request()->is('admin/daftar-user*') ? 'text-amber-400' : '' }}"></i>
+                    <i
+                        class="fas fa-users w-5 text-center {{ request()->is('admin/daftar-user*') ? 'text-amber-400' : '' }}"></i>
                     Kelola User
                 </a>
 
@@ -116,7 +117,7 @@
                     @csrf
                     <button
                         class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-2xl bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all duration-300 font-bold text-xs uppercase tracking-widest">
-                        <i class="fas fa-sign-out-alt"></i> Logout Akun
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </form>
             </div>
