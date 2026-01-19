@@ -145,11 +145,13 @@
                             </button>
                         </form>
                     @else
-                        <button disabled
-                            class="w-full py-2 md:py-3 bg-slate-200 text-slate-400 rounded-lg md:rounded-xl font-bold text-[9px] md:text-sm uppercase tracking-widest cursor-not-allowed">
-                            Terisi
-                        </button>
-                    @endif
+    <div
+        class="w-full py-2 md:py-3 bg-slate-200 text-slate-400 rounded-lg md:rounded-xl
+               flex items-center justify-center cursor-not-allowed">
+        <i class="fas fa-lock text-sm md:text-lg opacity-70"></i>
+    </div>
+@endif
+
                 </div>
 
                 @if ($loop->last)
