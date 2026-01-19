@@ -15,6 +15,7 @@
             </div>
         </div>
 
+        <a href="{{ route('admin.lapangan.index') }}" class="block">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div
                 class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
@@ -31,23 +32,27 @@
                     </div>
                 </div>
             </div>
+        </a>
 
-            <div
-                class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
-                <div class="bg-amber-50 p-8 rounded-[2.3rem] flex items-center justify-between overflow-hidden relative">
-                    <i
+            <a href="{{ route('admin.booking.index') }}" class="block">
+                <div class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
+                    
+                    <div class="bg-amber-50 p-8 rounded-[2.3rem] flex items-center justify-between overflow-hidden relative">
+                        <i
                         class="fas fa-ticket-alt absolute -right-4 -bottom-4 text-7xl text-amber-100 group-hover:scale-110 transition-transform"></i>
-                    <div class="relative z-10">
-                        <p class="text-xs font-black uppercase tracking-widest text-amber-500">Total Booking</p>
-                        <h2 class="text-4xl font-black text-amber-900 mt-1">{{ $totalBooking }}</h2>
-                    </div>
-                    <div
+                        <div class="relative z-10">
+                            <p class="text-xs font-black uppercase tracking-widest text-amber-500">Total Booking</p>
+                            <h2 class="text-4xl font-black text-amber-900 mt-1">{{ $totalBooking }}</h2>
+                        </div>
+                        <div
                         class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-amber-200 relative z-10">
                         <i class="fas fa-receipt fa-xl"></i>
                     </div>
                 </div>
             </div>
+            </a>
 
+        <a href="{{ route('admin.report.index') }}" class="block">
             <div
                 class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
                 <div class="bg-emerald-50 p-8 rounded-[2.3rem] flex items-center justify-between overflow-hidden relative">
@@ -66,7 +71,7 @@
                 </div>
             </div>
         </div>
-
+        </a>
 
         <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
             <div class="p-8 border-b border-slate-50 flex items-center justify-between">
