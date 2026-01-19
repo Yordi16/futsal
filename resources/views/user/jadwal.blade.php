@@ -47,19 +47,33 @@
         </div>
 
 
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <h4 class="text-base md:text-lg font-black text-slate-800 uppercase tracking-tight">Pilih Slot Jadwal Tersedia
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 px-1">
+           
+            <h4 class="text-sm md:text-lg font-black text-slate-800 uppercase tracking-tight">
+                Pilih Slot Jadwal Tersedia
             </h4>
-            <div class="flex gap-4 text-[10px] font-black uppercase tracking-widest">
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 bg-emerald-500 rounded"></div> Tersedia
+
+          
+            <div
+                class="flex flex-row items-center gap-3 md:gap-4 text-[8px] md:text-[10px] font-black uppercase tracking-widest">
+
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <div class="w-2.5 h-2.5 bg-emerald-500 rounded-sm"></div>
+                    <span class="text-slate-500">Tersedia</span>
                 </div>
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 bg-slate-300 rounded"></div> Terisi
+
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <div class="w-2.5 h-2.5 bg-rose-500 rounded-sm"></div>
+                    <span class="text-slate-500">Dibooking</span>
                 </div>
+
+                <div class="flex items-center gap-1.5 flex-shrink-0">
+                    <div class="w-2.5 h-2.5 bg-slate-300 rounded-sm"></div>
+                    <span class="text-slate-500">Tidak Tersedia</span>
+                </div>
+
             </div>
         </div>
-
         <div class="space-y-4">
             @php $currentDate = null; @endphp
 
@@ -90,15 +104,21 @@
 
                 <div
                     class="p-3 md:p-6 rounded-2xl md:rounded-3xl border-2 transition-all 
-                                {{ $jadwal->status_slot === 'tersedia' ? 'border-emerald-100 bg-white shadow-sm' : 'border-slate-100 bg-slate-50 opacity-60' }}">
+                                {{ $jadwal->status_slot === 'tersedia' ? 'border-emerald-100 bg-white shadow-sm' :
+                ($jadwal->status_slot === 'dibooking' ? 'border-rose-100 bg-rose-50/30' : 'border-slate-100 bg-slate-50 opacity-60') }}">
 
                     <div class="flex justify-between items-start mb-2 md:mb-4">
                         <div
-                            class="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center {{ $jadwal->status_slot === 'tersedia' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-400' }}">
+                            class="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center 
+                                        {{ $jadwal->status_slot === 'tersedia' ? 'bg-emerald-100 text-emerald-600' :
+                ($jadwal->status_slot === 'dibooking' ? 'bg-rose-100 text-rose-600' : 'bg-slate-200 text-slate-400') }}">
                             <i class="fas fa-clock text-[10px] md:text-base"></i>
                         </div>
-                        <span
-                            class="text-[8px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md {{ $jadwal->status_slot === 'tersedia' ? 'bg-emerald-500 text-white' : 'bg-slate-300 text-slate-600' }}">
+
+
+                        <span class="text-[8px] md:text-[10px] font-black uppercase px-2 py-0.5 rounded-md 
+                                        {{ $jadwal->status_slot === 'tersedia' ? 'bg-emerald-500 text-white' :
+                ($jadwal->status_slot === 'dibooking' ? 'bg-rose-500 text-white' : 'bg-slate-300 text-slate-600') }}">
                             {{ $jadwal->status_slot }}
                         </span>
                     </div>
