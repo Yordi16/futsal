@@ -15,6 +15,7 @@
             </div>
         </div>
 
+        <a href="{{ route('admin.lapangan.index') }}" class="block">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div
                 class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
@@ -31,6 +32,7 @@
                     </div>
                 </div>
             </div>
+        </a>
 
             <a href="{{ route('admin.booking.index') }}" class="block">
                 <div class="group bg-white p-1 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">

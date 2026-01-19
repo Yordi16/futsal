@@ -27,7 +27,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::resource('lapangan', LapanganController::class);
-
+    Route::get('/lapangan', [LapanganController::class, 'index'])->name('admin.lapangan.index');
     Route::get('/jadwal', [AdminJadwalLapanganController::class, 'index'])->name('admin.jadwal.index');
     Route::get('/jadwal/create', [AdminJadwalLapanganController::class, 'create'])->name('admin.jadwal.create');
     Route::post('/jadwal', [AdminJadwalLapanganController::class, 'store'])->name('admin.jadwal.store');
