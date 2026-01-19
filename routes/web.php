@@ -31,6 +31,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/jadwal', [AdminJadwalLapanganController::class, 'index'])->name('admin.jadwal.index');
     Route::get('/jadwal/create', [AdminJadwalLapanganController::class, 'create'])->name('admin.jadwal.create');
     Route::post('/jadwal', [AdminJadwalLapanganController::class, 'store'])->name('admin.jadwal.store');
+    Route::post('/admin/jadwal/generate', [AdminJadwalLapanganController::class, 'generate'])->name('admin.jadwal.generate');
     Route::get('/jadwal/{jadwal}/edit', [AdminJadwalLapanganController::class, 'edit'])->name('admin.jadwal.edit');
     Route::put('/jadwal/{jadwal}', [AdminJadwalLapanganController::class, 'update'])->name('admin.jadwal.update');
     Route::delete('/jadwal/{jadwal}', [AdminJadwalLapanganController::class, 'destroy'])->name('admin.jadwal.destroy');

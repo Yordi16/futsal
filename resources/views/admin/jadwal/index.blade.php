@@ -42,17 +42,29 @@
         </div>
 
 
+
         @if (session('success'))
-            <div x-show="showSuccess"
-                class="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex items-center justify-between gap-3 shadow-sm">
+            <div x-data="{ show: true }" x-show="show"
+                class="mb-4 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-xl flex items-center justify-between gap-3 shadow-sm transition-all">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xs">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <p class="text-emerald-700 font-bold text-sm">{{ session('success') }}</p>
+                    <i class="fas fa-check-circle text-emerald-500"></i>
+                    <p class="text-emerald-700 text-xs font-bold uppercase tracking-wide">{{ session('success') }}</p>
                 </div>
-                <button @click="showSuccess = false" class="text-emerald-400 hover:text-emerald-600 p-2">
-                    <i class="fas fa-times text-lg"></i>
+                <button @click="show = false" class="text-emerald-400 hover:text-emerald-600 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div x-data="{ show: true }" x-show="show"
+                class="mb-4 p-4 bg-rose-50 border-l-4 border-rose-500 rounded-xl flex items-center justify-between gap-3 shadow-sm transition-all">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-exclamation-circle text-rose-500"></i>
+                    <p class="text-rose-700 text-xs font-bold uppercase tracking-wide">{{ session('error') }}</p>
+                </div>
+                <button @click="show = false" class="text-rose-400 hover:text-rose-600 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
                 </button>
             </div>
         @endif

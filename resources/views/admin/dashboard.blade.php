@@ -106,23 +106,50 @@
                                     </span>
                                 </td>
                                 <td class="px-8 py-5 text-sm text-slate-500 font-medium">
-                                    <i class="far fa-calendar-alt mr-1 text-indigo-300"></i>
-                                    {{ $b->jadwalLapangan->tanggal }}
-                                    <span class="mx-2 text-slate-200">|</span>
-                                    <i class="far fa-clock mr-1 text-indigo-300"></i> {{ $b->jadwalLapangan->jam_mulai }} -
-                                    {{ $b->jadwalLapangan->jam_selesai }}
+                                    <div class="flex items-center gap-2">
+                                        <i class="far fa-calendar-alt text-indigo-400"></i>
+                                        <span>{{ \Carbon\Carbon::parse($b->jadwalLapangan->tanggal)->format('Y-m-d') }}</span>
+                                        <span class="text-slate-200">|</span>
+                                        <i class="far fa-clock text-indigo-400"></i>
+                                        <span>
+                                            {{ date('H:i', strtotime($b->jadwalLapangan->jam_mulai)) }} -
+                                            {{ date('H:i', strtotime($b->jadwalLapangan->jam_selesai)) }}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td class="px-8 py-5 text-center">
                                     @php
-                                        $statusClass =
-                                            [
-                                                'pending' => 'bg-amber-100 text-amber-700 border-amber-200',
-                                                'booked' => 'bg-indigo-100 text-indigo-700 border-indigo-200',
-                                                'selesai' => 'bg-emerald-100 text-emerald-700 border-emerald-200',
-                                            ][$b->status] ?? 'bg-slate-100 text-slate-700';
+                                        $config = match ($b->status) {
+                                            'pending' => [
+                                                'bg' => 'bg-amber-100',
+                                                'text' => 'text-amber-700',
+                                                'icon' => 'fa-clock',
+                                            ],
+                                            'booked' => [
+                                                'bg' => 'bg-blue-100',
+                                                'text' => 'text-blue-700',
+                                                'icon' => 'fa-check-circle',
+                                            ],
+                                            'selesai' => [
+                                                'bg' => 'bg-emerald-100',
+                                                'text' => 'text-emerald-700',
+                                                'icon' => 'fa-flag-checkered',
+                                            ],
+                                            'batal', 'dibatalkan' => [
+                                                'bg' => 'bg-rose-100',
+                                                'text' => 'text-rose-700',
+                                                'icon' => 'fa-times-circle',
+                                            ],
+                                            default => [
+                                                'bg' => 'bg-slate-100',
+                                                'text' => 'text-slate-700',
+                                                'icon' => 'fa-question-circle',
+                                            ],
+                                        };
                                     @endphp
                                     <span
-                                        class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border {{ $statusClass }}">
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest {{ $config['bg'] }} {{ $config['text'] }}">
+                                        <i class="fas {{ $config['icon'] }}"></i>
                                         {{ $b->status }}
                                     </span>
                                 </td>
