@@ -77,6 +77,19 @@
                 </div>
             </div>
 
+             <div>
+                <label
+                    class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 ml-1">Phone</label>
+                <div class="relative mt-1">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                         <i class="fas fa-phone text-xs md:text-sm"></i>
+                    </span>
+                    <input type="text" name="phone" value="{{ old('phone') }}" required
+                        class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-emerald-100 focus:border-emerald-500 focus:outline-none transition-all placeholder:text-slate-300 text-sm"
+                        placeholder="Masukkan No. Telpon">
+                </div>
+            </div>
+
             <div>
                 <label
                     class="text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em] text-slate-400 ml-1">Password</label>

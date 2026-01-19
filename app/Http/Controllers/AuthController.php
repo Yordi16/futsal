@@ -49,6 +49,7 @@ class AuthController extends Controller
         $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users,email',
+            'phone'    => 'required|regex:/^[0-9]{10,15}$/|unique:users,phone',
             'password' => 'required|min:6|confirmed'
         ]);
 
@@ -56,6 +57,7 @@ class AuthController extends Controller
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'phone'    => $request->phone,
             'role'     => 'user'
         ]);
 
