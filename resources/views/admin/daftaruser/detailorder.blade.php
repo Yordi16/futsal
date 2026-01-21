@@ -86,19 +86,39 @@
                                 </div>
                             </td>
 
-                            {{-- STATUS --}}
+                            
                             <td class="px-8 py-6 text-center">
                                 @php
-                                    $statusStyle = [
-                                        'pending' => 'bg-amber-100 text-amber-600 border-amber-200',
-                                        'booked' => 'bg-emerald-500 text-white border-emerald-600 shadow-sm shadow-emerald-100',
-                                        'selesai' => 'bg-slate-100 text-slate-500 border-slate-200',
-                                        'dibatalkan' => 'bg-rose-100 text-rose-600 border-rose-200',
-                                    ];
-                                    $style = $statusStyle[$booking->status] ?? 'bg-slate-100 text-slate-600 border-slate-200';
+                                    $config = match ($booking->status) {
+                                        'pending' => [
+                                            'bg' => 'bg-amber-100',
+                                            'text' => 'text-amber-700',
+                                            'icon' => 'fa-clock',
+                                        ],
+                                        'booked' => [
+                                            'bg' => 'bg-blue-100',
+                                            'text' => 'text-blue-700',
+                                            'icon' => 'fa-check-circle',
+                                        ],
+                                        'selesai' => [
+                                            'bg' => 'bg-emerald-100',
+                                            'text' => 'text-emerald-700',
+                                            'icon' => 'fa-flag-checkered',
+                                        ],
+                                        'batal', 'dibatalkan' => [
+                                            'bg' => 'bg-rose-100',
+                                            'text' => 'text-rose-700',
+                                            'icon' => 'fa-times-circle',
+                                        ],
+                                        default => [
+                                            'bg' => 'bg-slate-100',
+                                            'text' => 'text-slate-700',
+                                            'icon' => 'fa-question-circle',
+                                        ],
+                                    };
                                 @endphp
-                                <span
-                                    class="{{ $style }} border px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block min-w-[110px]">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest {{ $config['bg'] }} {{ $config['text'] }}">
+                                    <i class="fas {{ $config['icon'] }}"></i>
                                     {{ $booking->status }}
                                 </span>
                             </td>

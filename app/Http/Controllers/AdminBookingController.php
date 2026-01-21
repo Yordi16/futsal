@@ -40,7 +40,7 @@ class AdminBookingController extends Controller
                     $booking->jadwalLapangan->update(['status_slot' => 'dibooking']);
                 }
 
-                if (in_array($request->status, ['selesai', 'dibatalkan'])) {
+                if (in_array($request->status, ['dibatalkan'])) {
                     $booking->jadwalLapangan->update(['status_slot' => 'tersedia']);
                 }
             }

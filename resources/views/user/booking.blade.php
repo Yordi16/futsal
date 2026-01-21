@@ -5,6 +5,20 @@
 @section('content')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div class="space-y-6">
+
+
+        <div class="flex items-center justify-between px-2 md:px-0 mb-8">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-black text-slate-800">Riwayat Booking Anda</h1>
+                <p class="text-slate-500 text-xs md:text-sm font-medium mt-1">Pantau status dan riwayat booking lapangan
+                    anda.</p>
+            </div>
+            <a href="{{ route('user.lapangan') }}"
+                class="inline-flex items-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                <i class="fas fa-plus-circle text-sm md:text-lg"></i>
+                <span>Pesan Lagi</span>
+            </a>
+        </div>
         @if (session('success'))
             <div
                 class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl font-bold flex items-center gap-3 mx-2 md:mx-0">
