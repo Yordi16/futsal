@@ -100,7 +100,7 @@
         <thead>
             <tr>
                 <th width="5%">No</th>
-                <th width="20%">Nama User</th>
+                <th width="20%">Nama Pelanggan</th>
                 <th width="20%">Lapangan</th>
                 <th width="15%">Tanggal</th>
                 <th width="20%">Sesi Jam</th>

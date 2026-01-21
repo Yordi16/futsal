@@ -67,7 +67,7 @@
                     <thead>
                         <tr class="bg-slate-50/50 text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">
                             <th class="px-6 py-4">Lapangan</th>
-                            <th class="px-6 py-4">Waktu & Tanggal</th>
+                            <th class="px-6 py-4">Tanggal & Waktu</th>
                             <th class="px-6 py-4 text-center">Status</th>
                             <th class="px-6 py-4 text-right">Detail</th>
                         </tr>

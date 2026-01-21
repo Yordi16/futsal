@@ -9,7 +9,7 @@
             <div>
                 <h3 class="text-2xl font-black text-slate-800 tracking-tight">Daftar Lapangan.</h3>
                 <p class="text-slate-500 font-medium text-sm md:text-base">Temukan lapangan yang sesuai dengan gaya
-                    permainan tim Anda.</p>
+                    permainan tim anda.</p>
             </div>
 
 
@@ -18,21 +18,21 @@
 
                 <a href="{{ route('user.lapangan') }}"
                     class="flex-1 text-center whitespace-nowrap px-3 py-2 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all 
-                                               {{ !request('jenis') ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
+                                                       {{ !request('jenis') ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
                     Semua
                 </a>
 
 
                 <a href="{{ route('user.lapangan', ['jenis' => 'rumput sintetis']) }}"
                     class="flex-1 text-center whitespace-nowrap px-3 py-2 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all 
-                                               {{ request('jenis') == 'rumput sintetis' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
+                                                       {{ request('jenis') == 'rumput sintetis' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
                     Rumput Sintetis
                 </a>
 
 
                 <a href="{{ route('user.lapangan', ['jenis' => 'vinyl']) }}"
                     class="flex-1 text-center whitespace-nowrap px-3 py-2 rounded-xl font-bold text-[10px] md:text-xs uppercase tracking-widest transition-all 
-                                               {{ request('jenis') == 'vinyl' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
+                                                       {{ request('jenis') == 'vinyl' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-indigo-600' }}">
                     Vinyl
                 </a>
             </div>
@@ -113,7 +113,7 @@
                                     <button disabled
                                         class="px-4 py-2 bg-slate-100 text-slate-400 rounded-xl flex items-center gap-2 cursor-not-allowed border border-slate-200">
                                         <i class="fas fa-lock text-[10px]"></i>
-                                        <span class="text-[9px] font-black uppercase tracking-widest">Tidak Tersedia</span>
+                                        <span class="text-[9px] font-black uppercase tracking-widest">Maintenance</span>
                                     </button>
                                 </div>
                             @endif

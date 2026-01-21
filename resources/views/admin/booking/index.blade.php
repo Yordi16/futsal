@@ -123,10 +123,10 @@
                                                     Pelanggan</th>
                                                 <th
                                                     class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
-                                                    Sesi Waktu</th>
+                                                    Waktu</th>
                                                 <th
                                                     class="px-6 py-4 text-right text-[9px] font-black uppercase tracking-widest">
-                                                    Total Bayar</th>
+                                                    Total Harga</th>
                                                 <th
                                                     class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
                                                     Status</th>

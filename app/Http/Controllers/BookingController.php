@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lapangan;
 use App\Models\JadwalLapangan;
 use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,12 @@ class BookingController extends Controller
         return DB::transaction(function () use ($request) {
             $jadwal = JadwalLapangan::with('lapangan')->findOrFail($request->jadwal_id);
 
+            $mulai = Carbon::parse($jadwal->jam_mulai);
+            $selesai = Carbon::parse($jadwal->jam_selesai);
+
+
+            $durasiJam = $mulai->diffInMinutes($selesai) / 60;
+
             if ($jadwal->status_slot !== 'tersedia') {
                 return back()->with('error', 'Maaf, jadwal ini baru saja dipesan orang lain.');
             }
@@ -34,7 +41,7 @@ class BookingController extends Controller
             Booking::create([
                 'user_id' => Auth::id(),
                 'jadwal_lapangan_id' => $jadwal->id,
-                'total_harga' => $jadwal->lapangan->harga_per_jam,
+                'total_harga' => $jadwal->lapangan->harga_per_jam * $durasiJam,
                 'metode_pembayaran' => 'cod',
                 'status' => 'pending',
             ]);

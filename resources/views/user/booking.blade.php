@@ -7,22 +7,29 @@
     <div class="space-y-6">
 
 
-        <div class="flex items-center justify-between px-2 md:px-0 mb-8">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-black text-slate-800">Riwayat Booking Anda</h1>
-                <p class="text-slate-500 text-xs md:text-sm font-medium mt-1">Pantau status dan riwayat booking lapangan
-                    anda.</p>
+        <div class="flex flex-col md:flex-row md:items-center justify-between px-2 md:px-0 mb-8 gap-5">
+            <div class="min-w-0">
+                <h1 class="text-2xl md:text-3xl font-black text-slate-800 leading-tight">
+                    Riwayat Booking Anda
+                </h1>
+                <p class="text-slate-500 text-[11px] md:text-sm font-medium mt-1">
+                    Pantau status dan riwayat booking anda.
+                </p>
             </div>
+
+
             <a href="{{ route('user.lapangan') }}"
-                class="inline-flex items-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all">
+                class="flex items-center justify-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-indigo-600 text-white rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-[0.15em] shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all w-full md:w-auto">
                 <i class="fas fa-plus-circle text-sm md:text-lg"></i>
                 <span>Pesan Lagi</span>
             </a>
         </div>
+
         @if (session('success'))
             <div
-                class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl font-bold flex items-center gap-3 mx-2 md:mx-0">
-                <i class="fas fa-check-circle text-xl"></i> {{ session('success') }}
+                class="bg-emerald-100 border border-emerald-200 text-emerald-700 px-4 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl font-bold flex items-center gap-2 md:gap-3 mx-2 md:mx-0 shadow-sm">
+                <i class="fas fa-check-circle text-base md:text-xl"></i>
+                <span class="text-[11px] md:text-sm leading-tight">{{ session('success') }}</span>
             </div>
         @endif
 
@@ -33,7 +40,7 @@
                     <div class="p-4 md:p-8">
                         <div class="flex flex-col md:flex-row justify-between gap-4 md:items-center">
 
-                            {{-- Section Kiri: ID & Nama Lapangan --}}
+
                             <div class="flex items-center gap-3 md:gap-4">
                                 <div
                                     class="w-12 h-12 md:w-20 md:h-20 bg-indigo-50 rounded-xl md:rounded-2xl flex flex-col items-center justify-center text-indigo-600 border border-indigo-100 flex-shrink-0">
@@ -53,14 +60,15 @@
                                         </p>
                                         <p class="text-emerald-600 font-black text-[9px] md:text-sm flex items-center gap-2">
                                             <i class="fas fa-clock w-3 md:w-4"></i>
-                                            {{ $b->jadwalLapangan?->jam_mulai ?? '--' }} -
-                                            {{ $b->jadwalLapangan?->jam_selesai ?? '--' }}
+                                            {{ $b->jadwalLapangan?->jam_mulai ? substr($b->jadwalLapangan->jam_mulai, 0, 5) : '--' }}
+                                            -
+                                            {{ $b->jadwalLapangan?->jam_selesai ? substr($b->jadwalLapangan->jam_selesai, 0, 5) : '--' }}
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            {{-- Section Kanan: Harga & Status (Mobile Optimized) --}}
+
                             <div
                                 class="flex flex-row md:flex-col justify-between items-center md:items-end bg-slate-50 md:bg-transparent p-3 md:p-0 rounded-xl md:rounded-none border border-slate-100 md:border-none">
                                 <div class="text-left md:text-right">
@@ -90,7 +98,7 @@
                         </div>
                     </div>
 
-                    {{-- Tombol Batal --}}
+
                     @if ($b->status === 'pending')
                         <div
                             class="bg-rose-50/30 border-t border-dashed border-rose-100 px-4 py-3 md:px-6 md:py-4 flex justify-end">
@@ -118,16 +126,21 @@
     <script>
         function confirmCancel(id) {
             Swal.fire({
-                title: 'Batalkan Pesanan?',
+                title: 'Batalkan Booking?',
                 text: "Jadwal ini akan tersedia kembali untuk pemain lain.",
                 icon: 'warning',
+                width: window.innerWidth < 768 ? '90%' : '500px',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
                 cancelButtonColor: '#1e1b4b',
                 confirmButtonText: 'Ya, Batalkan',
                 cancelButtonText: 'Kembali',
                 customClass: {
-                    popup: 'rounded-3xl'
+                    popup: 'rounded-[2rem]',
+                    title: 'text-lg md:text-2xl font-black',
+                    htmlContainer: 'text-xs md:text-base',
+                    confirmButton: 'text-xs md:text-sm py-3 px-6 mx-1',
+                    cancelButton: 'text-xs md:text-sm py-3 px-6 mx-1'
                 }
             }).then((result) => {
                 if (result.isConfirmed) {

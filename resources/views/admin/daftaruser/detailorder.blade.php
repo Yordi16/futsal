@@ -34,9 +34,9 @@
                 <thead>
                     <tr class="bg-slate-50/50 text-slate-400 uppercase">
                         <th class="w-1/3 px-8 py-5 text-left text-[10px] font-black tracking-widest">Informasi Lapangan</th>
-                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Tanggal Main</th>
-                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Durasi Jadwal</th>
-                        <th class="px-6 py-5 text-right text-[10px] font-black tracking-widest">Total Bayar</th>
+                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Tanggal</th>
+                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Waktu</th>
+                        <th class="px-6 py-5 text-right text-[10px] font-black tracking-widest">Total Harga</th>
                         <th class="px-8 py-5 text-center text-[10px] font-black tracking-widest">Status</th>
                     </tr>
                 </thead>

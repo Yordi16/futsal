@@ -99,11 +99,13 @@
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-slate-50/50 text-slate-400">
-                            <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-widest">User</th>
+                            <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-widest">Pelanggan</th>
                             <th class="px-8 py-5 text-left text-[10px] font-black uppercase tracking-widest">Lapangan</th>
-                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-widest">Waktu Main
+                            <th class="px-8 py-5 text-center text-[10px] font-black uppercase tracking-widest">Tanggal &
+                                Waktu
                             </th>
-                            <th class="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest">Nominal</th>
+                            <th class="px-8 py-5 text-right text-[10px] font-black uppercase tracking-widest">Total Harga
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-50">
