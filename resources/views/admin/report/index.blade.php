@@ -122,8 +122,10 @@
                                         <span
                                             class="font-bold text-slate-600">{{ $booking->jadwalLapangan->tanggal ?? '-' }}</span>
                                         <span
-                                            class="text-[10px] font-bold text-emerald-500 uppercase">{{ $booking->jadwalLapangan->jam_mulai }}
-                                            - {{ $booking->jadwalLapangan->jam_selesai }}</span>
+                                            class="text-[10px] font-bold text-emerald-500 uppercase">{{ \Carbon\Carbon::parse($booking->jadwalLapangan->jam_mulai)->format('H:i') }}
+                                            -
+                                            {{ \Carbon\Carbon::parse($booking->jadwalLapangan->jam_selesai)->format('H:i') }}
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="px-8 py-5 text-right">

@@ -117,7 +117,8 @@
                     <td>{{ $b->lapangan->nama_lapangan ?? '-' }}</td>
                     <td class="center">{{ \Carbon\Carbon::parse($b->jadwalLapangan->tanggal)->format('d/m/Y') }}</td>
                     <td class="center">
-                        {{ $b->jadwalLapangan->jam_mulai }} - {{ $b->jadwalLapangan->jam_selesai }}
+                        {{ \Carbon\Carbon::parse($b->jadwalLapangan->jam_mulai)->format('H:i') }} -
+                        {{ \Carbon\Carbon::parse($b->jadwalLapangan->jam_selesai)->format('H:i') }}
                     </td>
                     <td class="right">
                         Rp {{ number_format($b->total_harga, 0, ',', '.') }}
