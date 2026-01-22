@@ -12,7 +12,7 @@ class UserDetailController extends Controller
         // proteksi admin
         abort_if(auth()->user()->role !== 'admin', 403);
 
-        // ambil booking milik user ini
+        // ambil booking milik user 
         $bookings = $user->bookings()
             ->with('jadwalLapangan.lapangan')
             ->orderBy('created_at', 'desc')
