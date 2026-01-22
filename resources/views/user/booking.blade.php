@@ -10,10 +10,10 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between px-2 md:px-0 mb-8 gap-5">
             <div class="min-w-0">
                 <h1 class="text-2xl md:text-3xl font-black text-slate-800 leading-tight">
-                    Riwayat Booking Anda
+                    Riwayat Booking
                 </h1>
                 <p class="text-slate-500 text-[11px] md:text-sm font-medium mt-1">
-                    Pantau status dan riwayat booking anda.
+                    Pantau status dan riwayat booking Anda.
                 </p>
             </div>
 
