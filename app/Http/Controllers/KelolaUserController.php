@@ -14,8 +14,8 @@ class KelolaUserController extends Controller
 
         // ambil semua user dari tabel users
         $users = User::where('role', 'user')
-        ->orderBy('created_at', 'desc')
-        ->get();
+        ->latest()
+        ->paginate(10);
 
         // kirim ke view
         return view('admin.daftaruser.index', compact('users'));

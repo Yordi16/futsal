@@ -16,7 +16,7 @@ class UserDetailController extends Controller
         $bookings = $user->bookings()
             ->with('jadwalLapangan.lapangan')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(5);
 
         return view('admin.daftaruser.detailorder', compact('user', 'bookings'));
     }

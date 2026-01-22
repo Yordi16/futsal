@@ -27,7 +27,7 @@
                         Total User
                     </span>
                     <div class="text-xl font-black text-slate-800 leading-none">
-                        {{ $users->count() }}
+                        {{ $users->total() }}
                     </div>
                 </div>
             </div>
@@ -118,8 +118,12 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
+            {{-- PAGINATION --}}
+            <div class="px-6 py-4 border-t border-slate-100">
+                {{ $users->links() }}
+            </div>
+        </div>
 
     </div>
 @endsection
