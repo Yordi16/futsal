@@ -17,8 +17,7 @@
     </style>
 </head>
 
-<body
-    class="min-h-screen bg-gradient-to-br from-emerald-600 via-green-600 to-indigo-800 flex items-center justify-center p-4 md:p-6">
+<body class="min-h-screen bg-indigo-950 flex items-center justify-center p-4 md:p-6">
 
     <div class="bg-white/95 backdrop-blur-md rounded-[2.5rem] shadow-2xl w-full max-w-md p-6 md:p-10 transition-all">
 
