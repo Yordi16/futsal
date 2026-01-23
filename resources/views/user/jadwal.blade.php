@@ -123,9 +123,9 @@
                         </span>
                     </div>
 
-                    <h5 class="text-sm md:text-xl font-black text-slate-800">{{ $jadwal->jam_mulai }} -
-                        {{ $jadwal->jam_selesai }}
-                    </h5>
+                    <h5 class="text-sm md:text-xl font-black text-slate-800">
+    {{ substr($jadwal->jam_mulai, 0, 5) }} - {{ substr($jadwal->jam_selesai, 0, 5) }}
+</h5>
 
                     <div class="mt-1 mb-3 md:mb-6">
                         <p class="text-slate-500 text-[9px] md:text-xs font-medium">Durasi: {{ $jadwal->durasi }} Jam</p>
@@ -139,10 +139,10 @@
                             @csrf
                             <input type="hidden" name="jadwal_id" value="{{ $jadwal->id }}">
                             <button type="button"
-                                onclick="confirmBooking('{{ $jadwal->id }}', '{{ $jadwal->jam_mulai }}', '{{ $jadwal->jam_selesai }}')"
-                                class="w-full py-2 md:py-3 bg-indigo-950 text-white rounded-lg md:rounded-xl font-bold text-[9px] md:text-sm hover:bg-emerald-500 transition-all uppercase tracking-widest shadow-md">
-                                Booking
-                            </button>
+    onclick="confirmBooking('{{ $jadwal->id }}', '{{ substr($jadwal->jam_mulai, 0, 5) }}', '{{ substr($jadwal->jam_selesai, 0, 5) }}')"
+    class="w-full py-2 md:py-3 bg-indigo-950 text-white rounded-lg md:rounded-xl font-bold text-[9px] md:text-sm hover:bg-emerald-500 transition-all uppercase tracking-widest shadow-md">
+    Booking
+</button>
                         </form>
                     @else
     <div
@@ -175,24 +175,29 @@
             icon.classList.toggle('rotate-180');
         }
 
-        function confirmBooking(id, mulai, selesai) {
-            Swal.fire({
-                title: 'Konfirmasi Booking',
-                text: "Jam " + mulai + " - " + selesai + ". Lanjutkan?",
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#059669',
-                cancelButtonColor: '#1e1b4b',
-                confirmButtonText: 'Ya, Booking!',
-                cancelButtonText: 'Batal',
-                customClass: {
-                    popup: 'rounded-3xl'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('form-booking-' + id).submit();
-                }
-            })
+      function confirmBooking(id, mulai, selesai) {
+    Swal.fire({
+        title: 'Konfirmasi Booking',
+        text: "Jam " + mulai + " - " + selesai + ". Lanjutkan?",
+        icon: 'question',
+        width: window.innerWidth < 768 ? '90%' : '500px', 
+        showCancelButton: true,
+        confirmButtonColor: '#059669',
+        cancelButtonColor: '#1e1b4b',
+        confirmButtonText: 'Ya, Booking!',
+        cancelButtonText: 'Batal',
+        customClass: {
+            popup: 'rounded-[2rem]',
+            title: 'text-lg md:text-2xl font-black',
+            htmlContainer: 'text-xs md:text-base', 
+            confirmButton: 'text-xs md:text-sm py-3 px-6 mx-1', 
+            cancelButton: 'text-xs md:text-sm py-3 px-6 mx-1'
         }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('form-booking-' + id).submit();
+        }
+    })
+}
     </script>
 @endsection

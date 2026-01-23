@@ -123,10 +123,10 @@
                                                     Pelanggan</th>
                                                 <th
                                                     class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
-                                                    Sesi Waktu</th>
+                                                    Waktu</th>
                                                 <th
                                                     class="px-6 py-4 text-right text-[9px] font-black uppercase tracking-widest">
-                                                    Total Bayar</th>
+                                                    Total Harga</th>
                                                 <th
                                                     class="px-6 py-4 text-center text-[9px] font-black uppercase tracking-widest">
                                                     Status</th>
@@ -156,8 +156,8 @@
                                                     <td class="px-6 py-4 text-center">
                                                         <span
                                                             class="px-3 py-1.5 bg-slate-100 rounded-lg text-slate-600 font-bold text-xs tracking-tight border border-slate-200">
-                                                            {{ $booking->jadwalLapangan->jam_mulai }} -
-                                                            {{ $booking->jadwalLapangan->jam_selesai }}
+                                                            {{ \Carbon\Carbon::parse($booking->jadwalLapangan->jam_mulai)->format('H:i') }} -
+                                            {{ \Carbon\Carbon::parse($booking->jadwalLapangan->jam_selesai)->format('H:i') }}
                                                         </span>
                                                     </td>
                                                     <td class="px-6 py-4 text-right font-black text-emerald-600">

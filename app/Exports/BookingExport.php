@@ -53,7 +53,7 @@ class BookingExport implements FromCollection, WithHeadings, WithMapping, Should
             $booking->user->name ?? 'User Terhapus',
             $booking->jadwalLapangan->lapangan->nama_lapangan ?? '-',
             $booking->jadwalLapangan->tanggal,
-            $booking->jadwalLapangan->jam_mulai . ' - ' . $booking->jadwalLapangan->jam_selesai,
+            substr($booking->jadwalLapangan->jam_mulai, 0, 5) . ' - ' . substr($booking->jadwalLapangan->jam_selesai, 0, 5),
             $booking->total_harga,
         ];
     }

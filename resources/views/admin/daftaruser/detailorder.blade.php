@@ -30,13 +30,13 @@
 
         {{-- TABLE --}}
         <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
-            <table class="w-full text-sm table-fixed"> {{-- table-fixed agar lebar kolom konsisten --}}
+            <table class="w-full text-sm table-fixed">
                 <thead>
                     <tr class="bg-slate-50/50 text-slate-400 uppercase">
                         <th class="w-1/3 px-8 py-5 text-left text-[10px] font-black tracking-widest">Informasi Lapangan</th>
-                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Tanggal Main</th>
-                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Durasi Jadwal</th>
-                        <th class="px-6 py-5 text-right text-[10px] font-black tracking-widest">Total Bayar</th>
+                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Tanggal</th>
+                        <th class="px-6 py-5 text-center text-[10px] font-black tracking-widest">Waktu</th>
+                        <th class="px-6 py-5 text-right text-[10px] font-black tracking-widest">Total Harga</th>
                         <th class="px-8 py-5 text-center text-[10px] font-black tracking-widest">Status</th>
                     </tr>
                 </thead>
@@ -47,9 +47,7 @@
                             {{-- LAPANGAN --}}
                             <td class="px-8 py-6">
                                 <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-1.5 h-10 bg-indigo-500 rounded-full group-hover:scale-y-110 transition-transform">
-                                    </div>
+                                    <div class="w-1.5 h-10 bg-indigo-500 rounded-full group-hover:scale-y-110 transition-transform"></div>
                                     <div>
                                         <div class="font-black text-slate-700 text-base leading-tight">
                                             {{ $booking->jadwalLapangan->lapangan->nama_lapangan }}
@@ -68,12 +66,10 @@
                                 </div>
                             </td>
 
-                            {{-- JAM (Tanpa Detik) --}}
+                            {{-- JAM --}}
                             <td class="px-6 py-6 text-center">
-                                <div
-                                    class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg font-black text-xs">
+                                <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-600 rounded-lg font-black text-xs">
                                     <i class="far fa-clock text-[10px]"></i>
-                                    {{-- substr(..., 0, 5) digunakan untuk mengambil HH:mm saja --}}
                                     {{ substr($booking->jadwalLapangan->jam_mulai, 0, 5) }} -
                                     {{ substr($booking->jadwalLapangan->jam_selesai, 0, 5) }}
                                 </div>
@@ -89,16 +85,16 @@
                             {{-- STATUS --}}
                             <td class="px-8 py-6 text-center">
                                 @php
-                                    $statusStyle = [
-                                        'pending' => 'bg-amber-100 text-amber-600 border-amber-200',
-                                        'booked' => 'bg-emerald-500 text-white border-emerald-600 shadow-sm shadow-emerald-100',
-                                        'selesai' => 'bg-slate-100 text-slate-500 border-slate-200',
-                                        'dibatalkan' => 'bg-rose-100 text-rose-600 border-rose-200',
-                                    ];
-                                    $style = $statusStyle[$booking->status] ?? 'bg-slate-100 text-slate-600 border-slate-200';
+                                    $config = match ($booking->status) {
+                                        'pending' => ['bg' => 'bg-amber-100', 'text' => 'text-amber-700', 'icon' => 'fa-clock'],
+                                        'booked' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-700', 'icon' => 'fa-check-circle'],
+                                        'selesai' => ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-700', 'icon' => 'fa-flag-checkered'],
+                                        'batal', 'dibatalkan' => ['bg' => 'bg-rose-100', 'text' => 'text-rose-700', 'icon' => 'fa-times-circle'],
+                                        default => ['bg' => 'bg-slate-100', 'text' => 'text-slate-700', 'icon' => 'fa-question-circle'],
+                                    };
                                 @endphp
-                                <span
-                                    class="{{ $style }} border px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest inline-block min-w-[110px]">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest {{ $config['bg'] }} {{ $config['text'] }}">
+                                    <i class="fas {{ $config['icon'] }}"></i>
                                     {{ $booking->status }}
                                 </span>
                             </td>
@@ -107,8 +103,7 @@
                         <tr>
                             <td colspan="5" class="text-center py-24">
                                 <div class="flex flex-col items-center">
-                                    <div
-                                        class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-4">
+                                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mb-4">
                                         <i class="fas fa-calendar-times text-2xl"></i>
                                     </div>
                                     <p class="text-slate-400 font-black uppercase tracking-widest text-xs">
@@ -120,6 +115,11 @@
                     @endforelse
                 </tbody>
             </table>
+
+            {{-- PAGINATION --}}
+            <div class="px-8 py-4 border-t border-slate-100">
+                {{ $bookings->links() }}
+            </div>
         </div>
 
     </div>
